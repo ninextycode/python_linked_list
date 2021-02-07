@@ -2,6 +2,7 @@ from linked_list import LinkedList, sort_linked_list
 
 l = LinkedList([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 print(l)
+assert list(l) == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 l.add_front(-99)
 l.add_back(99)
