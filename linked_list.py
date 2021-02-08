@@ -76,15 +76,18 @@ class LinkedList:
         def __repr__(self):
             return self.__str__()
 
+        def __next__(self):
+            return self._nex
+
     class Iterator:
         def __init__(self, node):
-            self._node = node
+            self.node = node
 
         def __next__(self):
-            if self._node is None:
+            if self.node is None:
                 raise StopIteration()
-            data = self._node.data
-            self._node = self._node._nex
+            data = self.node.data
+            self.node = self.node._nex
             return data
 
     def __iter__(self):
@@ -175,14 +178,9 @@ class LinkedList:
         return self.__str__()
 
 
-def sort_linked_list(linked_list, key=None, reverse=False):
+def sort_linked_list(linked_list, key=None):
     if len(linked_list) < 2:
         return linked_list
-
-    if reverse:
-        key_coeff = -1
-    else:
-        key_coeff = 1
 
     if key is None:
         key = lambda x: x
@@ -192,10 +190,25 @@ def sort_linked_list(linked_list, key=None, reverse=False):
         swapped = False
         n = linked_list.head
         while n is not linked_list.tail:
-            if key_coeff * key(n.data) > key_coeff * key(n._nex.data):
+            if key(n.data) > key(n._nex.data):
                 swapped = True
                 n.swap_with_next()
             else:
-                n = n._nex
+                n = next(n)
+
+    return linked_list
+
+
+def insert_ordered(linked_list, data, key=None):
+    if key is None:
+        key = lambda x: x
+
+    n = linked_list.head
+    while n is not None and key(n.data) < key(data):
+        n = next(n)
+    if n is None:
+        linked_list.add_back(data)
+    else:
+        n.insert_before(data)
 
     return linked_list
